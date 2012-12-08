@@ -2,10 +2,12 @@
 # -*- coding: utf8 -*-
 
 """
-    new_script.py: This script is about ...
+    Todo lo que trate de operaciones con archivos
 """
 
 ##Importaciones
+
+    import os, system, csv
 
 
 
