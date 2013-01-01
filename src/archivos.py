@@ -2,13 +2,21 @@
 # -*- coding: utf8 -*-
 
 """
+<<<<<<< HEAD
     Maneja todo lo relacionado al manejo de archivos.
+=======
+    Todo lo que trate de operaciones con archivos
+>>>>>>> 50bed007fe9a537f8373c2fb25477cbfbe53d0ed
 """
 
 ##Importaciones
 
+<<<<<<< HEAD
 import csv
 import os
+=======
+    import os, system, csv
+>>>>>>> 50bed007fe9a537f8373c2fb25477cbfbe53d0ed
 
 
 
