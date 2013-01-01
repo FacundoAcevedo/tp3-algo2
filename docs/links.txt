@@ -1,7 +1,10 @@
 Grafos en python -  http://www.forosdelweb.com/f130/aporte-sencilla-implementacion-grafos-817941/ 
+
+
 http://stackoverflow.com/questions/7529538/create-kml-from-csv-in-python
 
 
+<<<<<<< HEAD
 Forma de representacion de grafos.
 http://es.wikipedia.org/wiki/Grafo_(estructura_de_datos)
 
@@ -26,3 +29,6 @@ Buscar diferencia entre prim y kruskal
 
 Trajan
 http://en.wikipedia.org/wiki/Tarjan's_strongly_connected_components_algorithm
+=======
+el camino mas corto -> http://www.python.org/doc/essays/graphs.html
+>>>>>>> 62c2f558afcef03c0aaabb6c711fd2f22dfb1b7d
