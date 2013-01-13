@@ -6,18 +6,20 @@
 """
 
 ##Importaciones
-from grafo import Grafo, dijktra
+from grafo import Grafo, dijkstra, imprimir_distancia, imprimir_ruta
 from texto import *
 from archivos import *
+
+
 
 
 ##Funciones
 
 def probar(booleano,texto):
 	if booleano:
-		print "La preuba "+texto+": OK"
+		print "La prueba "+texto+": OK"
 	if not booleano:
-		print "La preuba "+texto+": ERROR"
+		print "La prueba "+texto+": ERROR"
 	else:
 		" -- ERROR TESTEANDO "+texto
 		
@@ -30,36 +32,49 @@ def separador():
 def prueba_grafo():
 	#creo el grafo
 	grafo = Grafo()
-	
-	# 1 -> 2 -> 3 -> 5
-	#      ^    ^	este sera mi grafo de preubas
-	#      4 <--|
-	
+        
+        #~ +-----> 2 <----> 3 +-
+        #~ +       ^        ^  |     
+        #~ 1       |        |  |->5--->6
+        #~ ^       |        |     +
+        #~ |       |        |     |
+        #~ |       +-->4 <--+     |
+        #~ |                      |
+        #~ +----------------------+
+	 
 	#agrego los nodos
 	grafo.agregar_vertice(1)
 	grafo.agregar_vertice(2)
 	grafo.agregar_vertice(3)
 	grafo.agregar_vertice(4)
 	grafo.agregar_vertice(5)
+        grafo.agregar_vertice(6)
 	
 	#agrego las aristas
-	grafo.agregar_arista(1,2,0)
-	grafo.agregar_arista(2,3,1)
-	grafo.agregar_arista(3,5,0)
-	grafo.agregar_arista(4,2,2)
-	grafo.agregar_arista(4,3,3,True)
-	
-	dijktra(grafo,1)
-	
+	grafo.agregar_arista(1,2,1)
+	grafo.agregar_arista(2,3,1,True)
+	grafo.agregar_arista(3,5,1)
+	grafo.agregar_arista(4,2,1,True)
+	grafo.agregar_arista(4,3,1,True)
+        grafo.agregar_arista(5,1,1)
+        grafo.agregar_arista(5,6,1)
+        
+	vert_inicio = grafo.obtener_vertice(1)
+        vert_fin = grafo.obtener_vertice(6)
+	ruta = dijkstra(grafo, vert_inicio)
+        print imprimir_ruta(ruta, vert_inicio, vert_fin)
+        
+        
+	#~ imprimir_distancia(distancia)
 	
 	## La comparacion depende del orden osea que [1,2] es distinto a [2,1] OJO!
-	probar(grafo.obtener_vertice(1).conseguir_lista_conexiones() == [2],\
+	probar(grafo.obtener_vertice(1).obtener_lista_adyacentes() == [2],\
 	"Prueba_de_enlaces_1")
-	probar(sorted(grafo.obtener_vertice(4).conseguir_lista_conexiones()) == [2,3],\
+	probar(sorted(grafo.obtener_vertice(4).obtener_lista_adyacentes()) == [2,3],\
 	"Prueba_de_enlaces_2")
-	probar(sorted(grafo.obtener_vertice(3).conseguir_lista_conexiones()) == [4,5],\
+	probar(sorted(grafo.obtener_vertice(3).obtener_lista_adyacentes()) == [2,4,5],\
 	"Prueba_de_enlaces_3")
-	probar(grafo.obtener_vertice(5).conseguir_lista_conexiones() == [],\
+	probar(sorted(grafo.obtener_vertice(5).obtener_lista_adyacentes()) == [1,6],\
 	"Prueba_de_enlaces_4")
 	
 	#~ print grafo
