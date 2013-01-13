@@ -65,7 +65,7 @@ def prueba_grafo():
         print imprimir_ruta(ruta, vert_inicio, vert_fin)
         ruta_procesada = procesar_ruta(ruta, vert_inicio, vert_fin)
         
-        #~ print ruta_procesada
+        
         print [ i.clave for i in ruta_procesada]
         
         
@@ -113,11 +113,27 @@ def prueba_cargar_archivo():
 		probar(False, "Existe info_nodo")
 
 	separador()
+        
+def prueba_completa():
+        ruta="../mapas/partido_gerli.csv"
+	#devuelve dos grafos y la informacion de los nodos
+	grafo_nodos, grafo_calles, info_nodo = obtener_datos(ruta)
+        
+        vert_inicio = grafo_nodos.obtener_vertice(324)
+        vert_fin = grafo_nodos.obtener_vertice(325)
+        
+        
+        ruta = dijkstra(grafo_nodos, vert_inicio)
+        imprimir_ruta(ruta, vert_inicio, vert_fin)
+        raw_input()
+        ruta_procesada = procesar_ruta(ruta, vert_inicio, vert_fin)
+
 
 ##Corro las pruebas
 print ("::PRUEBAS::")
 #~ prueba_texto()
 #~ prueba_cargar_archivo()
-prueba_grafo()
+#~ prueba_grafo()
+prueba_completa()
 
 ##########################<EOF
