@@ -6,32 +6,38 @@
 """
 from cola import Cola
 
+#VARIABLE GLOBAL
+#Si es necesario que la quite, avisame, solo la voy a usar para poder
+#comparar con infinito, so no la tengo que declarar en todos lados
+#no tarda en calcularo: real 0m0.039s
+infinito = 9999**999
+
 class Vertice:
     def __init__(self,clave):
         """Crea el vertice"""
-        self.clave =clave
+        self.clave = clave
         self.adyacentes = {} #Crea un diccionario de vertices adyacentes
 
-    def agregar_vecino(self,vecino,peso):
+    def agregar_vecino(self, vecino, peso):
         """Agrega vertices adyacentes propiamente al vertice"""
         self.adyacentes[vecino] = peso #Agrega el peso del vecino objeto
 
-    def __str__(self):
-        """Imprime los adyacentes del vertice"""
-        return str(self.clave) + ' --> ' + str([i.clave for i in self.adyacentes])
+    #~ def __str__(self):
+        #~ """Imprime los adyacentes del vertice"""
+        #~ return str(self.clave) + ' --> ' + str([i.clave for i in self.adyacentes])
 
-    def conseguir_conexiones(self):
+    def obtener_adyacentes(self):
         """Retorna los vertices adyacentes"""
         return self.adyacentes.keys()
     
-    def conseguir_lista_conexiones(self):
+    def obtener_lista_adyacentes(self):
         return [int(i.clave) for i in self.adyacentes]
 
-    def conseguir_clave(self):
+    def obtener_clave(self):
         """Retorna un vertice que posee adyacentes"""
         return self.clave
 
-    def conseguir_peso(self,vecino):
+    def obtener_peso(self,vecino):
         """Retona el peso de la arista"""
         return self.adyacentes[vecino]
 
@@ -47,7 +53,7 @@ class Grafo:
     def __str__(self):
         s = "\n::Conexiones::\n"
         for vertice, vecinos in self.vertices.iteritems():
-            for elemento in vecinos.conseguir_lista_conexiones():
+            for elemento in vecinos.obtener_lista_adyacentes():
                 s += str(vertice) +  " -> "  + str(elemento) + "\n"
         return s        
         
@@ -67,9 +73,13 @@ class Grafo:
         else:
             return None
             
-    def obtener_vertices(self):
+    def obtener_lista_vertices(self):
         """Retorna los vertices que componen el grafo"""
         return self.vertices.keys()
+    
+    def obtener_objetos_vertice(self):
+        """Retorna todos los vertieces (OBJETOS)"""
+        return self.vertices.values()
 
     def __contains__(self,n):
         """Retorna el vertice si se encuentra en el grafo"""
@@ -99,47 +109,116 @@ def verificar_existencia_calles(calles, grafo):
         return True
     return False
     
-def dijktra(grafo, vertice_inicial):
-    """Devuelve una colo de los nodos a visitar"""
+def procesar_ruta(ruta, vert_inicio, vert_fin):
+    """Recibe una ruta (diccionario) el vertice inicial y el vertice
+    final, devuelve una lista de los vertices(objeto) ordenados de
+    de inicio a fin"""
+    
+    salida = []
+    cadena =  ""
+    aux = ruta[vert_fin]
+    salida.append(vert_fin.clave)
+
+    for i in range(len(ruta)-2):
+        salida.append(aux.clave)
+        aux = ruta[aux]
+    salida.append(aux)
+    salida.append(vert_inicio)
+    
+    salida.reverse()
+    
+    return salida
+
+def imprimir_distancia(distancia):
+    """Recibe un diccionario e imprime las distancias de manera
+    leible para los.. humanos"""
+    salida = []
+    
+    for vertice, distancia in distancia.items():
+        if distancia == infinito:
+            distancia = "INF"
+        cad = str(vertice.clave) + " - " +  str(distancia)
+        salida.append(cad)
+    salida.sort()
+    for elemento in salida:
+        print elemento
+
+def imprimir_ruta(ruta, vert_inicio, vert_fin):
+    """Imprime la ruta de manera legible"""
+    salida = []
+    
+    cadena =  ""
+    
+    aux = ruta[vert_fin]
+    salida.append(str(vert_fin.clave))
+
+
+    for i in range(len(ruta)-2):
+        salida.append(str(aux.clave))
+        aux = ruta[aux]
+    salida.append(str(aux.clave))
+    salida.append(str(vert_inicio.clave))
+    
+    salida.reverse()
+    for item in salida:
+        cadena += item+"->"
+        
+    return cadena[:len(cadena)-2]
+    
+            
+        
+    
+        
+        
+    
+
+    
+def dijkstra(grafo, vertice_inicial): ##Reimplementacion con hash...
+    """Devuelve una cola de los nodos a visitar
+    vertice_inicial es un objeto vertice"""
     cola = Cola()
-    infinito = -1 #-1 esta lejos de infinito, depende de donde lo mires
-    distancia = []
-    visto = []
+    #~ infinito = 6*(10**23)
+    distancia = {}
+    visto = {}
+    ruta = {}
+    
+    if not isinstance(vertice_inicial, Vertice):
+        return 0
     
     #~ Marco todo como distancia infinito y no visitado
-    for indice in range(len(grafo)-1):
-        distancia.append(infinito)
-        visto.append(False)
+    for objeto_vertice in grafo.obtener_objetos_vertice():
+        distancia[objeto_vertice] = infinito
+        visto[objeto_vertice] = False
     
     
-    for vertice in grafo.obtener_vertices():
+    for vertice in grafo.obtener_objetos_vertice():
         #~ Reviso que sean vecinos
-        if vertice_inicial not in vertice.adyacentes:  #VER ACA
-            distancia[vertice.conseguir_clave()] = infinito
+        #~ if vertice_inicial not in vertice.adyacentes:
+        if vertice not in vertice_inicial.adyacentes:
+            distancia[vertice] = infinito
         else:
-            distancia[vertice.conseguir_clave()] = vertice.conseguir_peso(vertice_inicial)
+            #~ distancia[vertice] = vertice.obtener_peso(vertice_inicial)
+            distancia[vertice] = vertice_inicial.obtener_peso(vertice)
             
     distancia[vertice_inicial] = 0
     visto[vertice_inicial] = True
     
     #~ Mientras haya un vertice sin visistar
-    while False in visto:
-        #~ Busco en la lista el primero no visitado
-        vertice_visitar = visto.index(False)
-        #~ Lo visito
-        visto[a_visitar] = True
-        #~ Obtengo el objeto
-        vertice_visitar =  grafo.obtener_vertice(vertice_visitar)
+    #~ while False in visto.values():
+    for vertice_visitar,estado in sorted(visto.items()):
+        if estado is False:
+            #~ imprimir_distancia(distancia)
+            #lo marco como visitado
+            visto[vertice_visitar] = True            
+      
+            for vertice in vertice_visitar.obtener_adyacentes():
+                if distancia[vertice] > (distancia[vertice_visitar] + vertice_visitar.obtener_peso(vertice)):                    
+                    distancia[vertice] = distancia[vertice_visitar] + vertice_visitar.obtener_peso(vertice)
+                    ruta[vertice] = vertice_visitar
+                
+    return ruta
         
-        for vertice in vertice_visitar.conseguir_conexiones():
-            if distancia[vertice.conseguir_clave()] > distancia[vertice_visitar.conseguir_clave()] + vertice.conseguir_peso(vertice_visitar):
-                distancia[vertice.conseguir_clave()] = distancia[vertice_visitar.conseguir_clave()] + vertice.conseguir_peso(vertice_visitar)
-            
-    print distancia
-        
-        
-    
-    
+#####################################################################################    
 #~ función Dijkstra (Grafo G, nodo_salida s)
   #~ //Usaremos un vector para guardar las distancias del nodo salida al resto entero distancia[n] 
   #~ //Inicializamos el vector con distancias iniciales booleano visto[n] 
@@ -164,5 +243,48 @@ def dijktra(grafo, vertice_inicial):
      #~ fin para 
   #~ fin mientras
 #~ fin función
+
+
+#~ def dijktra(grafo, vertice_inicial):
+    #~ """Devuelve una cola de los nodos a visitar"""
+    #~ cola = Cola()
+    #~ infinito = -1 #-1 esta lejos de infinito, depende de donde lo mires
+    #~ distancia = []
+    #~ visto = []
+    #~ 
+    #~ Marco todo como distancia infinito y no visitado
+    #~ for indice in range(len(grafo)+1): #el +1 es parche, Revisar por que se sale de rango
+        #~ distancia.append(infinito)
+        #~ visto.append(False)
+    #~ 
+    #~ 
+    #~ for vertice in grafo.obtener_objetos_vertice():
+        #~ Reviso que sean vecinos
+        #~ if vertice_inicial not in vertice.adyacentes:
+            #~ distancia[vertice.obtener_clave()] = infinito
+        #~ else:
+            #~ distancia[vertice.obtener_clave()] = vertice.obtener_peso(vertice_inicial)
+            #~ 
+    #~ distancia[vertice_inicial] = 0
+    #~ visto[vertice_inicial] = True
+    #~ 
+    #~ Mientras haya un vertice sin visistar
+    #~ while False in visto:
+        #~ Busco en la lista el primero no visitado
+        #~ vertice_visitar = visto.index(False)
+        #~ Lo visito
+        #~ visto[vertice_visitar] = True
+        #~ print vertice_visitar
+        #~ 
+        #~ Obtengo el objeto
+        #~ vertice_visitar =  grafo.obtener_vertice(vertice_visitar)
+        #~ 
+        #~ 
+        #~ for vertice in vertice_visitar.obtener_adyacentes():
+            #~ if distancia[vertice.obtener_clave()] > distancia[vertice_visitar.obtener_clave()] + vertice.obtener_peso(vertice_visitar):
+                #~ distancia[vertice.obtener_clave()] = distancia[vertice_visitar.obtener_clave()] + vertice.obtener_peso(vertice_visitar)
+            
+    #~ print distancia
+    
 
 
