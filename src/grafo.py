@@ -117,10 +117,10 @@ def procesar_ruta(ruta, vert_inicio, vert_fin):
     salida = []
     cadena =  ""
     aux = ruta[vert_fin]
-    salida.append(vert_fin.clave)
+    salida.append(vert_fin)
 
     for i in range(len(ruta)-2):
-        salida.append(aux.clave)
+        salida.append(aux)
         aux = ruta[aux]
     salida.append(aux)
     salida.append(vert_inicio)

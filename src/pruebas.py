@@ -6,7 +6,7 @@
 """
 
 ##Importaciones
-from grafo import Grafo, dijkstra, imprimir_distancia, imprimir_ruta
+from grafo import Grafo, dijkstra, imprimir_distancia, imprimir_ruta, procesar_ruta
 from texto import *
 from archivos import *
 
@@ -63,6 +63,11 @@ def prueba_grafo():
         vert_fin = grafo.obtener_vertice(6)
 	ruta = dijkstra(grafo, vert_inicio)
         print imprimir_ruta(ruta, vert_inicio, vert_fin)
+        ruta_procesada = procesar_ruta(ruta, vert_inicio, vert_fin)
+        
+        #~ print ruta_procesada
+        print [ i.clave for i in ruta_procesada]
+        
         
         
 	#~ imprimir_distancia(distancia)
