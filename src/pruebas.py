@@ -6,9 +6,10 @@
 """
 
 ##Importaciones
-from grafo import Grafo, dijkstra, imprimir_distancia, imprimir_ruta, procesar_ruta
+from grafo import Grafo, dijkstra, imprimir_distancia, imprimir_ruta, procesar_ruta, parsear_ruta
 from texto import *
 from archivos import *
+from sexykml import *
 
 
 
@@ -52,17 +53,20 @@ def prueba_grafo():
 	
 	#agrego las aristas
 	grafo.agregar_arista(1,2,1)
-	grafo.agregar_arista(2,3,1,True)
+	grafo.agregar_arista(2,3,1)
+        grafo.agregar_arista(3,2,1)
 	grafo.agregar_arista(3,5,1)
-	grafo.agregar_arista(4,2,1,True)
-	grafo.agregar_arista(4,3,1,True)
+	grafo.agregar_arista(4,2,1)
+        grafo.agregar_arista(2,4,1)
+	grafo.agregar_arista(4,3,1)
+        grafo.agregar_arista(3,4,1)
         grafo.agregar_arista(5,1,1)
         grafo.agregar_arista(5,6,1)
         
 	vert_inicio = grafo.obtener_vertice(1)
         vert_fin = grafo.obtener_vertice(6)
 	ruta = dijkstra(grafo, vert_inicio)
-        print imprimir_ruta(ruta, vert_inicio, vert_fin)
+        imprimir_ruta(ruta, vert_inicio, vert_fin)
         ruta_procesada = procesar_ruta(ruta, vert_inicio, vert_fin)
         
         
@@ -117,16 +121,29 @@ def prueba_cargar_archivo():
 def prueba_completa():
         ruta="../mapas/partido_gerli.csv"
 	#devuelve dos grafos y la informacion de los nodos
-	grafo_nodos, grafo_calles, info_nodo = obtener_datos(ruta)
+	grafo_nodos, grafo_calles, info_nodos = obtener_datos(ruta)
         
-        vert_inicio = grafo_nodos.obtener_vertice(324)
-        vert_fin = grafo_nodos.obtener_vertice(325)
+        vert_inicio = grafo_nodos.obtener_vertice(1)
+        cliente = info_nodos[vert_inicio.clave]
         
+        vert_fin = grafo_nodos.obtener_vertice(1000)
+        pizeria = info_nodos[vert_fin.clave]
         
         ruta = dijkstra(grafo_nodos, vert_inicio)
+        #~ print ruta
+        #~ raw_input()
         imprimir_ruta(ruta, vert_inicio, vert_fin)
-        raw_input()
+        #~ raw_input()
         ruta_procesada = procesar_ruta(ruta, vert_inicio, vert_fin)
+        ruta_parseada = parsear_ruta(ruta_procesada, info_nodos)
+        print "rut_par:",ruta_parseada
+        
+        #~ Genero el kml
+        kml = SexyKML("Prueba")
+        kml.agregar_marcador("Cliente", cliente["latitud"], cliente["longitud"])
+        kml.agregar_marcador("Pizeria", pizeria["latitud"], pizeria["longitud"])
+        kml.agregar_ruta("A comeeeer!", ruta_parseada)
+        kml.finalizar()
 
 
 ##Corro las pruebas

@@ -81,21 +81,22 @@ def _extraer_datos(handler):
     fila = contenido_csv.next()
     #obtengo los datos de las -CALLES-
     for i in range(calles_cant-1):
-        if int(fila[4]) not in grafo_nodos:
+        if int(int(fila[4])) not in grafo_nodos:
             grafo_nodos.agregar_vertice(int(fila[4]))
         if texto(fila[1]) not in grafo_calles:
             grafo_calles.agregar_vertice(texto(fila[1]))
         #Agrego las aristas
-        grafo_nodos.agregar_arista(fila[4],fila[5],fila[2])
-        grafo_calles.agregar_arista(texto(fila[1]),fila[4],fila[5])
+        grafo_nodos.agregar_arista(int(fila[4]),int(fila[5]),int(fila[2]))
+        grafo_calles.agregar_arista(texto(fila[1]),int(fila[4]),int(fila[5]))
         #Cuando son mano unica
         if int(fila[3]) == 0:
-            if fila[5] not in grafo_nodos:
-                grafo_nodos.agregar_vertice(fila[5])
-            grafo_nodos.agregar_arista(fila[5],fila[4],fila[2])
+            if int(fila[5]) not in grafo_nodos:
+                grafo_nodos.agregar_vertice(int(fila[5]))
+            grafo_nodos.agregar_arista(int(fila[5]),int(fila[4]),int(fila[2]))
         #devuelvo los grafos e info_nodo
         if i != calles_cant:
             fila = contenido_csv.next()
+        
     return grafo_nodos, grafo_calles ,info_nodo
 
 
