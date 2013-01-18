@@ -4,104 +4,110 @@
 """
    Todo lo relacionado al uso de grafo y el grafo mismo
 """
-from cola import Cola
 
-#VARIABLE GLOBAL
-#Si es necesario que la quite, avisame, solo la voy a usar para poder
-#comparar con infinito, so no la tengo que declarar en todos lados
-#no tarda en calcularo: real 0m0.039s
-#~ infinito = 9999**999
-infinito = float("inf")
 
+from constantes import *
+from texto import *
+
+
+class Grafo:
+    def __init__(self):
+        """Inicializa el grafo"""
+        self.vertices = {}
+
+
+    def __iter__(self):
+        """ Devuelve un iterador de los vertices"""
+        return iter(self.vertices.values())
+
+    def __str__(self):
+        "Para printear..."
+        s = "\n::Conexiones::\n"
+        for vertice, vecinos in self.vertices.iteritems():
+            for elemento in vecinos.obtener_lista_adyacentes():
+                s += str(vertice) +  " -> "  + str(elemento) + "\n"
+        return s
+        
+    def __contains__(self,vertice):
+        """si el vertice esta en el grafo, debuelve True"""
+        return vertice in self.vertices
+
+    def __len__(self):
+        "Cantidad de vertices"
+        return len(self.vertices)
+
+    def agregar_vertice(self,clave):
+        """Agrega un vertice"""
+        self.vertices[clave] = Vertice(clave) 
+
+    def obtener_vertice(self,vertice):
+        """Devuelve un objeto vertice"""
+        if vertice in self.vertices:
+            return self.vertices[vertice] 
+        else:
+            return None
+
+    def obtener_lista_vertices(self):
+        """Devuelve todos los vertices del grafo (str)"""
+        return self.vertices.keys()
+
+    def obtener_objetos_vertice(self):
+        """Devuelve todos los vertieces (OBJETOS)"""
+        return self.vertices.values()
+
+
+    def agregar_arista(self,vertice,vecino,peso):
+        """Agrega un vertice adyacente al actual con el peso"""
+        if vertice not in self.vertices:
+            self.agregar_vertice(vertice)
+        if vecino not in self.vertices:
+            self.agregar_vertice(vecino)
+        self.vertices[vertice].agregar_vecino(self.vertices[vecino], peso)
+    
 class Vertice:
     def __init__(self,clave):
-        """Crea el vertice"""
+        """Inicializa el vertice"""
         self.clave = clave
-        self.adyacentes = {} #Crea un diccionario de vertices adyacentes
+        self.adyacentes = {} 
 
     def agregar_vecino(self, vecino, peso):
-        """Agrega vertices adyacentes propiamente al vertice"""
-        self.adyacentes[vecino] = peso #Agrega el peso del vecino objeto
+        """Agrega vertices adyacentes al vertice"""
+        self.adyacentes[vecino] = peso 
 
-    #~ def __str__(self):
-        #~ """Imprime los adyacentes del vertice"""
-        #~ return str(self.clave) + ' --> ' + str([i.clave for i in self.adyacentes])
+    def __str__(self):
+        """Imprime los adyacentes del vertice"""
+        return str(self.clave) + ' --> ' + str([i.clave for i in self.adyacentes])
 
     def obtener_adyacentes(self):
-        """Retorna los vertices adyacentes"""
+        """Devuelve sus vertices adyacentes"""
         return self.adyacentes.keys()
 
     def obtener_lista_adyacentes(self):
         return [int(i.clave) for i in self.adyacentes]
 
     def obtener_clave(self):
-        """Retorna un vertice que posee adyacentes"""
+        """Devuelve su 'nombre'"""
         return self.clave
 
     def obtener_peso(self,vecino):
-        """Retona el peso de la arista"""
+        """Devuelve el peso de la arista"""
         return self.adyacentes[vecino]
 
-class Grafo:
-    def __init__(self):
-        """Crea el grafo"""
-        self.vertices = {} # clave es el nodo, valores es la clase vertices
 
-
-    def __iter__(self):
-        """ Crea un iterador en grafo"""
-        return iter(self.vertices.values())
-
-    def __str__(self):
-        s = "\n::Conexiones::\n"
-        for vertice, vecinos in self.vertices.iteritems():
-            for elemento in vecinos.obtener_lista_adyacentes():
-                s += str(vertice) +  " -> "  + str(elemento) + "\n"
-        return s
-
-    def __len__(self):
-        return len(self.vertices)
-
-    def agregar_vertice(self,clave):
-        """Agrega un vertice a la clase grafo"""
-        self.vertices[clave] = Vertice(clave) #crea un nuevo vertices
-
-    def obtener_vertice(self,vertice):
-        """Retorna el objeto clase vertice"""
-        if vertice in self.vertices:
-            return self.vertices[vertice] #retorna objeto
-        else:
-            return None
-
-    def obtener_lista_vertices(self):
-        """Retorna los vertices que componen el grafo"""
-        return self.vertices.keys()
-
-    def obtener_objetos_vertice(self):
-        """Retorna todos los vertieces (OBJETOS)"""
-        return self.vertices.values()
-
-    def __contains__(self,n):
-        """Retorna el vertice si se encuentra en el grafo"""
-        return n in self.vertices
-
-    def agregar_arista(self,vertice,vecino,peso):
-        """Agrega un vertice adyacente al actual con su peso de arista"""
-        if vertice not in self.vertices:
-            self.agregar_vertice(vertice)
-        if vecino not in self.vertices:
-            self.agregar_vertice(vecino)
-        self.vertices[vertice].agregar_vecino(self.vertices[vecino], peso)
-
-
-
-def verificar_existencia_calles(calles, grafo):
+def validar_calles(calles, grafo):
     """Verifica que las calles recibidas (dupla) esten dendo del grafo"""
     verticeA = grafo.obtener_vertice(calles[0])
     verticeB = grafo.obtener_vertice(calles[1])
 
     if verticeA and verticeB:
-        return True
+        #reviso que sea una haya interseccion
+        for vertice in verticeA.obtener_adyacentes():
+            if vertice in verticeB.obtener_adyacentes():
+                return vertice
+        #reviso desde el otro lado
+        for vertice in verticeB.obtener_adyacentes():
+            if vertice in verticeA.obtener_adyacentes():
+                return vertice
     return False
 
 def imprimir_distancia(distancia):
@@ -136,6 +142,7 @@ def procesar_ruta(ruta, vert_inicio, vert_fin):
         salida.append(aux)
     except KeyError:
         #NO SOY UN PARCHE!!!!
+        #Es por el primer/ultimo vertice
         pass
 
     salida.append(vert_inicio)
@@ -162,7 +169,8 @@ def imprimir_ruta(ruta, vert_inicio, vert_fin):
         salida.append(str(aux.clave))
 
     except KeyError:
-         #NO SOY UN PARCHE!!!!
+        #NO SOY UN PARCHE!!!!
+        #Es por el primer/ultimo vertice
         pass
     salida.append(str(vert_inicio.clave))
     salida.reverse()
@@ -229,7 +237,34 @@ def parsear_ruta(ruta, info_nodos):
         lat = str(info_nodos[vertice.clave]["latitud"])
         lon = str(info_nodos[vertice.clave]["longitud"])
         salida.append(lat+","+lon)
+        #~ salida.append(lon+","+lat)
+
     
     return salida
+    
+def viaje(grafo_nodos, A, nombreA, B, nombreB, info_nodos, kml):
+    """Genera el recorrido y lo guarda en el kml"""
+    verticeA = A[0]
+    dir_verticeA = A[1]
+    info_verticeA = A[2]
+    
+    verticeB = B[0]
+    dir_verticeB = B[1]
+    info_verticeB = B[2]
+    
+    print msj_dijkstra
+    ruta = dijkstra(grafo_nodos, verticeA)
+
+    ruta_procesada = procesar_ruta(ruta, verticeA, verticeB)
+    ruta_parseada = parsear_ruta(ruta_procesada, info_nodos)
+    #~ Genero el kml
+    print msj_kml
+    info_verticeA = info_nodos[verticeA.clave]
+    info_verticeB = info_nodos[verticeB.clave]
+    kml.agregar_marcador(texto(nombreA)+" "+dir_verticeA[0]+" y "+dir_verticeA[1], info_verticeA["latitud"], info_verticeA["longitud"])
+    kml.agregar_marcador(texto(nombreB)+" "+dir_verticeB[0]+" y "+dir_verticeB[1], info_verticeB["latitud"], info_verticeB["longitud"])
+    kml.agregar_ruta("Ruta "+texto(nombreA)+"->"+texto(nombreB), ruta_parseada)
+
+                    
         
         

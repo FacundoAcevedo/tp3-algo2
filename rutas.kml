@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+
+
+<!-- Título del mapa -->
+	<name>Pizeria Gerli, hoy Gerli, mañana... el mundo!</name>
+<!-- Final Título -->
+<!-- Acá empieza una línea -->
+	<Placemark>
+		<name>verticea oncativo y campichuelo</name>
+		<Point>
+			<coordinates>
+				-58.36756655,-34.69415376
+			</coordinates>
+		</Point>
+	</Placemark>
+<!-- Acá empieza una línea -->
+	<Placemark>
+		<name>verticeb supisiche y helguera</name>
+		<Point>
+			<coordinates>
+				-58.361049,-34.69199891
+			</coordinates>
+		</Point>
+	</Placemark>
+<!-- Acá empieza una línea -->
+	<Placemark>
+		<name>Ruta verticea->verticeb</name>
+		<LineString>
+			<coordinates>
+				-58.36756655,-34.69415376 -58.36660047,-34.69334243 -58.36573795,-34.69261361 -58.36468985,-34.69174449 -58.3641853,-34.6921449 -58.36344164,-34.69273067 -58.36263557,-34.69337917 -58.36183889,-34.69268881 -58.361049,-34.69199891 
+			</coordinates>
+		</LineString>
+	</Placemark>
+<!-- Acá empieza una línea -->
+	<Placemark>
+		<name>Ruta verticeb->verticea</name>
+		<LineString>
+			<coordinates>
+				-58.361049,-34.69199891 -58.36183889,-34.69268881 -58.36263557,-34.69337917 -58.36344164,-34.69273067 -58.3641853,-34.6921449 -58.36523044,-34.69304003 -58.36609251,-34.69374803 -58.3669615,-34.69460401 -58.36756655,-34.69415376 
+			</coordinates>
+		</LineString>
+	</Placemark>
+</Document>
+</kml>

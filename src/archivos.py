@@ -24,10 +24,12 @@ def validar_archivo(ruta):
 
     #Valido la existencia
     if not os.path.isfile(ruta):
-        raise ValueError("El archivo no existe, o no es del tipo esperado")
+        print "El archivo no existe, o no es del tipo esperado"
+        return None, None, None
     #valido que no este vacio
     if not os.path.getsize(ruta):
-        raise ValueError("El archivo esta vacio")
+        print "El archivo esta vacio"
+        return None, None, None
 
     #Intento abirirlo
     try:
@@ -37,6 +39,7 @@ def validar_archivo(ruta):
         return _extraer_datos(handler)
     except IOError:
         print "Ocurrio un error al intentar abrir el archivo",sys.exc_info()[0]
+        return None, None, None
     finally:
         handler.close()
 
@@ -74,8 +77,6 @@ def _extraer_datos(handler):
     #obtengo la cantidad de -CALLES-
     fila = contenido_csv.next()
     calles_cant = int(fila[0])
-
-
 
     #avanzo para obtener la primer fila de -CALLES-
     fila = contenido_csv.next()

@@ -6,7 +6,7 @@
 """
 
 ##Importaciones
-from grafo import Grafo, dijkstra, imprimir_distancia, imprimir_ruta, procesar_ruta, parsear_ruta
+from grafo import *
 from texto import *
 from archivos import *
 from sexykml import *
@@ -124,7 +124,7 @@ def prueba_completa():
 	grafo_nodos, grafo_calles, info_nodos = obtener_datos(ruta)
         
         vert_inicio = grafo_nodos.obtener_vertice(1)
-        cliente = info_nodos[vert_inicio.clave]
+        vertice_cliente = info_nodos[vert_inicio.clave]
         
         vert_fin = grafo_nodos.obtener_vertice(1000)
         pizeria = info_nodos[vert_fin.clave]
@@ -140,7 +140,7 @@ def prueba_completa():
         
         #~ Genero el kml
         kml = SexyKML("Prueba")
-        kml.agregar_marcador("Cliente", cliente["latitud"], cliente["longitud"])
+        kml.agregar_marcador("vertice_cliente", vertice_cliente["latitud"], vertice_cliente["longitud"])
         kml.agregar_marcador("Pizeria", pizeria["latitud"], pizeria["longitud"])
         kml.agregar_ruta("A comeeeer!", ruta_parseada)
         kml.finalizar()

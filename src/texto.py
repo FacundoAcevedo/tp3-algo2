@@ -16,16 +16,16 @@ def texto(entrada):
 	guiones bajos"""
 	
 	entrada = str(entrada)
-	return entrada.lower().replace(" ", "_")
+	return entrada.lower().rstrip().lstrip().replace(" ", "_")
 	
 def partir_calle(entrada):
         """La calle viene con el siguiente formato:
         Calle1,Calle2
         asi que tengo que devolver una tupla con las dos calles"""
-        separador = ","
+        separador = ','
         entrada = texto(entrada)
         indice = entrada.find(separador)
-        if indice != -1:
+        if indice not in (-1,0):
                 return entrada[:indice],entrada[indice+len(separador):]
         else:
                 return -1

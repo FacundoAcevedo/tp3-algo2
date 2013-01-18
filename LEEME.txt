@@ -1,0 +1,4 @@
+Use nice para darle prioridad maxima prioridad al proceso
+Quizas le tengas que dar permiso de ejcucion al script
+
+Saludos!

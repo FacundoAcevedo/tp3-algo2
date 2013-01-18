@@ -49,7 +49,8 @@ class SexyKML(object):
         cadena += """\t\t\t</coordinates>\n"""
         cadena += """\t\t</LineString>\n"""
         cadena += """\t</Placemark>\n"""
-        self.salida.append(cadena)
+        if cadena not in self.salida:
+                self.salida.append(cadena)
         
     
     def agregar_marcador(self, nombre, lat, lon):
@@ -64,7 +65,8 @@ class SexyKML(object):
         cadena += """\t\t\t</coordinates>\n"""
         cadena += """\t\t</Point>\n"""
         cadena += """\t</Placemark>\n"""
-        self.salida.append(cadena)
+        if cadena not in self.salida:
+                self.salida.append(cadena)
         
     
     def finalizar(self):
