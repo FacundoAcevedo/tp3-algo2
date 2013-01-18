@@ -49,6 +49,7 @@ class SexyKML(object):
         cadena += """\t\t\t</coordinates>\n"""
         cadena += """\t\t</LineString>\n"""
         cadena += """\t</Placemark>\n"""
+        cadena += """<!-- Acá termina una línea -->\n"""
         if cadena not in self.salida:
                 self.salida.append(cadena)
         
@@ -65,6 +66,7 @@ class SexyKML(object):
         cadena += """\t\t\t</coordinates>\n"""
         cadena += """\t\t</Point>\n"""
         cadena += """\t</Placemark>\n"""
+        cadena += """<!-- Acá termina una línea -->\n"""
         if cadena not in self.salida:
                 self.salida.append(cadena)
         
@@ -77,6 +79,8 @@ class SexyKML(object):
             return True
         except IOError:
             return False
+        finally:
+                self.archivo.close()
     
         
         

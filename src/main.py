@@ -41,7 +41,9 @@ def main():
         #Bucle principal
         opcion = menu()
         if opcion == "3":
+            #SALIR
             kml.finalizar()
+            print msj_kml_finalizado
             return 0
         
         elif opcion == "1":

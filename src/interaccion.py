@@ -25,8 +25,8 @@ def ingresar_calles(grafo_calles, mensaje):
     """Recibe las calles"""
     dupla= ()
     continuar = True
-    print "Ingrese la interseccion con el siguiente formato:\n\
-        calle1,calle2\n\n"
+    print "\nIngrese la interseccion con el siguiente formato:\n\
+        calle1,calle2\n"
     if mensaje:
         print mensaje.upper()
     while continuar:

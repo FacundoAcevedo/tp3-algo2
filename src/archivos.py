@@ -6,9 +6,10 @@
 """
 
 ##Importaciones
-import os, csv
+import os, csv, sys
 from grafo import Grafo
 from texto import texto
+from constantes import *
 
 
 
@@ -19,29 +20,29 @@ def obtener_datos(ruta):
 
 def validar_archivo(ruta):
     """Corrobora que el archivo exista, no este vacio, y se pueda abrir"""
-    #variables
-    handler = file
 
     #Valido la existencia
     if not os.path.isfile(ruta):
-        print "El archivo no existe, o no es del tipo esperado"
+        print msj_err_no_arc 
         return None, None, None
     #valido que no este vacio
     if not os.path.getsize(ruta):
-        print "El archivo esta vacio"
-        return None, None, None
+        print msj_err_vac_arc 
+        return None, None, None        
 
     #Intento abirirlo
     try:
         handler = open(ruta,"r")
 
         #Devuelvo los datos extraidos
-        return _extraer_datos(handler)
-    except IOError:
+        retorno =  _extraer_datos(handler)
+        handler.close()
+        return retorno
+        
+    except:
         print "Ocurrio un error al intentar abrir el archivo",sys.exc_info()[0]
         return None, None, None
-    finally:
-        handler.close()
+
 
 
 
