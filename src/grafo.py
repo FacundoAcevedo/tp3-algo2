@@ -234,12 +234,9 @@ def parsear_ruta(ruta, info_nodos):
     [vert1,vart2,...] y la devuelve de la menera x,y x,y x,y"""
     salida = []
     for vertice in ruta:
-        lat = str(info_nodos[vertice.clave]["latitud"])
-        lon = str(info_nodos[vertice.clave]["longitud"])
-        salida.append(lat+","+lon)
-        #~ salida.append(lon+","+lat)
-
-    
+        lat = str(info_nodos[vertice.clave]["lat"])
+        lon = str(info_nodos[vertice.clave]["lon"])
+        salida.append(lat+","+lon)    
     return salida
     
 def viaje(grafo_nodos, A, nombreA, B, nombreB, info_nodos, kml):

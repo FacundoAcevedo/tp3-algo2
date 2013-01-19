@@ -71,7 +71,7 @@ def _extraer_datos(handler):
     #obtengo los datos de los -NODOS-
     for i in range(nodos_cant-1):
         #guardo la info del nodo
-        info_nodo[ int(fila[0]) ] = {'x': float(fila[1]), 'y': float(fila[2]), 'latitud': float(fila[3]),'longitud': float(fila[4])}
+        info_nodo[ int(fila[0]) ] = {'x': float(fila[1]), 'y': float(fila[2]), 'lon': float(fila[4]),'lat': float(fila[3])}
         #avanzo una posicion si no estoy en el ultimo -NODO-
         if i != nodos_cant:
             fila = contenido_csv.next()
