@@ -15,32 +15,25 @@ class Grafo:
         """Inicializa el grafo"""
         self.vertices = {}
 
-
     def __iter__(self):
         """ Devuelve un iterador de los vertices"""
         return iter(self.vertices.values())
-
-    def __str__(self):
-        "Para printear..."
-        s = "\n::Conexiones::\n"
-        for vertice, vecinos in self.vertices.iteritems():
-            for elemento in vecinos.obtener_lista_adyacentes():
-                s += str(vertice) +  " -> "  + str(elemento) + "\n"
-        return s
         
-    def __contains__(self,vertice):
+    def __contains__(self, vertice):
         """si el vertice esta en el grafo, debuelve True"""
-        return vertice in self.vertices
+        if vertice in self.vertices:
+            return True
+        return False
 
     def __len__(self):
         "Cantidad de vertices"
         return len(self.vertices)
 
-    def agregar_vertice(self,clave):
+    def agregar_vertice(self, clave):
         """Agrega un vertice"""
         self.vertices[clave] = Vertice(clave) 
 
-    def obtener_vertice(self,vertice):
+    def obtener_vertice(self, vertice):
         """Devuelve un objeto vertice"""
         if vertice in self.vertices:
             return self.vertices[vertice] 
@@ -56,7 +49,7 @@ class Grafo:
         return self.vertices.values()
 
 
-    def agregar_arista(self,vertice,vecino,peso):
+    def agregar_arista(self, vertice, vecino, peso):
         """Agrega un vertice adyacente al actual con el peso"""
         if vertice not in self.vertices:
             self.agregar_vertice(vertice)
@@ -65,18 +58,14 @@ class Grafo:
         self.vertices[vertice].agregar_vecino(self.vertices[vecino], peso)
     
 class Vertice:
-    def __init__(self,clave):
+    def __init__(self, clave):
         """Inicializa el vertice"""
-        self.clave = clave
         self.adyacentes = {} 
+        self.clave = clave
 
     def agregar_vecino(self, vecino, peso):
         """Agrega vertices adyacentes al vertice"""
         self.adyacentes[vecino] = peso 
-
-    def __str__(self):
-        """Imprime los adyacentes del vertice"""
-        return str(self.clave) + ' --> ' + str([i.clave for i in self.adyacentes])
 
     def obtener_adyacentes(self):
         """Devuelve sus vertices adyacentes"""
@@ -89,7 +78,7 @@ class Vertice:
         """Devuelve su 'nombre'"""
         return self.clave
 
-    def obtener_peso(self,vecino):
+    def obtener_peso(self, vecino):
         """Devuelve el peso de la arista"""
         return self.adyacentes[vecino]
 
@@ -141,7 +130,6 @@ def procesar_ruta(ruta, vert_inicio, vert_fin):
             aux = ruta[aux]
         salida.append(aux)
     except KeyError:
-        #NO SOY UN PARCHE!!!!
         #Es por el primer/ultimo vertice
         pass
 
@@ -169,7 +157,6 @@ def imprimir_ruta(ruta, vert_inicio, vert_fin):
         salida.append(str(aux.clave))
 
     except KeyError:
-        #NO SOY UN PARCHE!!!!
         #Es por el primer/ultimo vertice
         pass
     salida.append(str(vert_inicio.clave))
@@ -208,7 +195,7 @@ def dijkstra(grafo,nodo_inicial):
     while False in visto.values():
         #mientras haya nodos no vistos, busco el vertice adyacente 
         #mas liviano (digamos...)
-        vertice=_buscar_minimo(distancia,visto)
+        vertice=_buscar_adyacente_minimo(distancia,visto)
         visto[vertice] = True
         for elemento in vertice.obtener_adyacentes():
             #Busco el menor y lo agrego a la ruta
@@ -218,15 +205,17 @@ def dijkstra(grafo,nodo_inicial):
 
     return ruta
 
-def _buscar_minimo(distancia,visitados):
+def _buscar_adyacente_minimo(distancia,visitados):
     """Funcion PRIVADA, Busca el vertice mas cercano y menos pesado"""
-    minimo = infinito
+    minimo_peso = infinito
     vertice = object
     
+    #reviso cada elemento, con su respectivo estado
     for elemento, estado in visitados.items():
-        if distancia[elemento] <= minimo and estado == False:
-            minimo=distancia[elemento]
-            vertice=elemento
+        #Busco el vertice mas cercano no visitado
+        if distancia[elemento] <= minimo_peso and estado == False:
+            vertice = elemento
+            minimo_peso = distancia[elemento]
     return vertice
 
 def parsear_ruta(ruta, info_nodos):
@@ -258,8 +247,8 @@ def viaje(grafo_nodos, A, nombreA, B, nombreB, info_nodos, kml):
     print msj_kml
     info_verticeA = info_nodos[verticeA.clave]
     info_verticeB = info_nodos[verticeB.clave]
-    kml.agregar_marcador(texto(nombreA)+" "+dir_verticeA[0]+" y "+dir_verticeA[1], info_verticeA["latitud"], info_verticeA["longitud"])
-    kml.agregar_marcador(texto(nombreB)+" "+dir_verticeB[0]+" y "+dir_verticeB[1], info_verticeB["latitud"], info_verticeB["longitud"])
+    kml.agregar_marcador(texto(nombreA)+" "+dir_verticeA[0]+" y "+dir_verticeA[1], info_verticeA["lat"], info_verticeA["lon"])
+    kml.agregar_marcador(texto(nombreB)+" "+dir_verticeB[0]+" y "+dir_verticeB[1], info_verticeB["lat"], info_verticeB["lon"])
     kml.agregar_ruta("Ruta "+texto(nombreA)+"->"+texto(nombreB), ruta_parseada)
 
                     

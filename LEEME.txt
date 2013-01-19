@@ -1,4 +1,13 @@
 Use nice para darle prioridad maxima prioridad al proceso
 Quizas le tengas que dar permiso de ejcucion al script
 
+Para probar el KML use google maps, para que funcione hay que subirlo dos veces
+( no creo que sea problema de kml, por que lo pase por un validador[0] y valida
+lo mas bien [segun lo que nos dieron como ejemplo])
+
+
+
 Saludos!
+
+[0] http://feedvalidator.org/
+
